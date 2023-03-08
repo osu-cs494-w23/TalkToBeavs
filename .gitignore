@@ -2,7 +2,11 @@
 backend/node_modules
 backend/.env
 backend/package-lock.json
+backend/.DS_Store
+backend/.vscode
 
 # Frontend Ignores
 frontend/node_modules
 frontend/package-lock.json
+frontend/.DS_Store
+frontend/.vscode

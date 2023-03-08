@@ -53,7 +53,7 @@ const queueOptions = (socket, io) => {
 
   socket.on("getQueueStatus", (data) => {
     console.log(`[Backend ⚡️]: ${data.name} requested the queue status`);
-    io.emit("getQueueStatus", {
+    io.emit("queueStatus", {
       queue: queue,
       queueSize: queue.length,
       queuePosition: queue.findIndex((user) => user.name === data.name),
