@@ -4,6 +4,7 @@ import Signup from "../pages/auth/Signup";
 import Landing from "../pages/navigation/Landing";
 import Login from "../pages/auth/Login";
 import Home from "../pages/navigation/Home";
+import FourOhFour from "../pages/error/FourOhFour";
 
 import VideoLobby from "../pages/navigation/VideoLobby";
 
@@ -16,7 +17,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/home" element={<Home />} />
         <Route path="/video" element={<VideoLobby />} />
-        <Route path="*" element={<h1>404</h1>} />
+        <Route path="*" element={<FourOhFour />} />
       </Routes>
     </BrowserRouter>
   );
