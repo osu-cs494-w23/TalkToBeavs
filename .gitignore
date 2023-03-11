@@ -1,8 +1,11 @@
 # Backend Ignores
 backend/node_modules
 backend/.env
-.vs
+
 
 
 # Frontend Ignores
 frontend/node_modules
+frontend/.vs
+frontend/.DS_Store
+frontend/src/.DS_Store
