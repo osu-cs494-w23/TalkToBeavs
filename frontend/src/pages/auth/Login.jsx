@@ -11,16 +11,19 @@ import {
 import axios from "axios";
 import ttb from "../../assets/logo.png";
 import { Link, useNavigate } from "react-router-dom";
-import { AuthContext } from "../../components/AuthProvider";
+import { loginUser, selectUser } from "../../redux/slices/UserSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function Login() {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
+  const user = useSelector(selectUser);
+  const error = useSelector((state) => state.user.error);
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [loginError, setError] = useState("");
   const [email, setEmail] = useState("");
   const [response, setResponse] = useState("");
-  const { login } = useContext(AuthContext);
+  const dispatch = useDispatch();
+  const [loading, setLoading] = useState(false);
 
   return (
     <Flex
@@ -64,37 +67,36 @@ function Login() {
               width="full"
               mt={4}
               colorScheme="orange"
-              isLoading={isLoading}
+              isLoading={user.isLoading}
               loadingText="Logging in..."
               onClick={async (e) => {
-                e.preventDefault();
-                setIsLoading(true);
-                setError("");
-                setResponse("");
+                const values = {
+                  email,
+                  password,
+                };
+
                 try {
-                  const response = await login(email, password);
-                  setTimeout(() => {
-                    if (response.status === 200) {
-                      setResponse(response.data.message);
-                      localStorage.setItem(
-                        "email",
-                        JSON.stringify(response.data.user.email)
-                      );
-                      setTimeout(() => {
-                        navigate("/home");
-                      }, 500);
-                    } else {
-                      setError(response.data.message);
-                    }
-                  }, 1000);
+                  setLoading(true);
+                  dispatch(loginUser(values));
+
+                  if (user.error === "Login Failed" || user.error === null) {
+                    setTimeout(() => {
+                      setError("Login Failed");
+                      setLoading(false);
+                    }, 2000);
+                  }
+
+                  if (user !== null) {
+                    setTimeout(() => {
+                      setResponse("Login Successful");
+                      setLoading(false);
+                      navigate("/home");
+                    }, 2000);
+                  }
                 } catch (error) {
-                  setTimeout(() => {
-                    setError(error.response.data.message);
-                  }, 1000);
+                  setLoading(false);
+                  setError("Login Failed");
                 }
-                setTimeout(() => {
-                  setIsLoading(false);
-                }, 1000);
               }}
             >
               Submit
@@ -102,9 +104,9 @@ function Login() {
           </form>
         </Box>
         <Box textAlign="center">
-          {error && (
+          {user.error && (
             <Text mt={4} textAlign="center" color="red.500">
-              {error}
+              {user.error}
             </Text>
           )}
           {response && (
