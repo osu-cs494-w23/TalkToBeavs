@@ -1,6 +1,7 @@
 # Backend Ignores
 backend/node_modules
 backend/.env
+.vs
 
 
 # Frontend Ignores
