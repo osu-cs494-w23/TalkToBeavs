@@ -7,12 +7,7 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    upvotes: {
-      type: Number,
-      required: false,
-      default: 0,
-    },
-    downvotes: {
+    votes: {
       type: Number,
       required: false,
       default: 0,
