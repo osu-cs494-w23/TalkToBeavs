@@ -19,6 +19,7 @@ import FourOhFour from "../pages/error/FourOhFour";
 
 import VideoLobby from "../pages/navigation/VideoLobby";
 import TextLobby from "../pages/navigation/TextLobby";
+import Lobby from "../pages/navigation/Lobby";
 import Home from "../pages/navigation/Home";
 import Landing from "../pages/navigation/Landing";
 
@@ -42,6 +43,8 @@ const App = () => {
           <Route path="/signup" element={<Signup />} />
           <Route path="/login" element={<Login />} />
           <Route path="/home" element={<Home />} />
+
+          <Route path="/lobby" element={<Lobby />} />
 
           <Route path="/video" element={<VideoLobby />} />
           <Route path="/video/:roomId" element={<VideoChat />} />

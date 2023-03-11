@@ -1,66 +1,68 @@
-import React, { useContext } from "react";
+import React from "react";
 import {
-  Button,
   Text,
   Heading,
   Flex,
   Box,
-  Image,
-  HStack,
-  ButtonGroup,
-  Input,
 } from "@chakra-ui/react";
-import { Link, useNavigate } from "react-router-dom";
 
-import OnlineUser from "../../components/OnlineUser";
+const posts = 
+[
+	{
+		_id: 0,
+		content: "This is my first post",
+		rating: 0,
+		postedBy: "artem"
+	},
+	{
+		_id: 1,
+		content: "This is my first post",
+		rating: 3,
+		postedBy: "colby"
+	},
+	{
+		_id: 2,
+		content: "This is my first post",
+		rating: 1,
+		postedBy: "tom"
+	},
+	{
+		_id: 3,
+		content: "This is my first post",
+		rating: 2,
+		postedBy: "jeff"
+	},
+	{
+		_id: 4,
+		content: "This is my second post",
+		rating: 1,
+		postedBy: "colby"
+	},
+	{
+		_id: 5,
+		content: "This is my third post",
+		rating: 0,
+		postedBy: "colby"
+	},
+	{
+		_id: 6,
+		content: "This is my second post",
+		rating: 0,
+		postedBy: "artem"
+	},
+]
 
-import { AuthContext } from "../../components/AuthProvider";
-
-const Home = () => {
-  const [name, setName] = React.useState("");
-
-  return (
-    <Flex
-      direction="column"
-      align="center"
-      justify="center"
-      minH="100vh"
-      bg="gray.100"
-    >
-      <HStack>
-        <OnlineUser/>
-        <Box
-          p={8}
-          maxWidth="400px"
-          borderWidth={1}
-          borderRadius={8}
-          boxShadow="lg"
-        >
-          <Heading textAlign={"center"}>Home</Heading>
-          <Text py={4} textAlign={"center"} w={"fit-content"}>
-            In TalkToBeavs, you can either text or video chat with other
-            students. You can also post to the bulletin board and see what other
-            students are posting.{" "}
-            <b>
-              <i>Enjoy!</i>
-            </b>
-          </Text>
-          <Input
-            placeholder="Enter your name"
-            onChange={(e) => setName(e.target.value)}
-          />
-          <ButtonGroup mt={4} spacing={4} w={"full"} justifyContent={"center"}>
-            <Button colorScheme="blue" variant="outline">
-              <Link to={`/video`}>Video Chat</Link>
-            </Button>
-            <Button colorScheme="blue" variant="outline">
-              <Link to="/text">Text Chat</Link>
-            </Button>
-          </ButtonGroup>
-        </Box>
-      </HStack>
-    </Flex>
-  );
-};
+function Home()
+{
+	
+	
+	return (
+        <Flex w="100%" direction="column" justify="center" pt={150}>
+			{posts.map(post => (
+				<Post key={post._id} post={post} />
+			))}
+		</Flex>
+	)
+}
 
 export default Home;
