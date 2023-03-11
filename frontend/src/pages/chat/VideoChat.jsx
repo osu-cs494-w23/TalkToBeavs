@@ -9,7 +9,7 @@ import {
   Image,
 } from "@chakra-ui/react";
 import io from "socket.io-client";
-import ttb from "../../assets/zyro-image.png";
+import ttb from "../../assets/logo.png";
 
 // const socket = io("ws://localhost:8080", {
 //   transports: ["websocket"],

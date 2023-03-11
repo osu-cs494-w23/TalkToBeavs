@@ -9,7 +9,7 @@ import {
   Text,
 } from "@chakra-ui/react";
 import axios from "axios";
-import ttb from "../../assets/zyro-image.png";
+import ttb from "../../assets/logo.png";
 import io from "socket.io-client";
 import { Link } from "react-router-dom";
 
