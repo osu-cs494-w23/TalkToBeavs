@@ -1,6 +1,17 @@
-import { useState } from "react";
-import { Box, Button, Flex, Heading, Input, Text } from "@chakra-ui/react";
+import { useState, useEffect } from "react";
+import {
+  Box,
+  Button,
+  Flex,
+  Heading,
+  Image,
+  Input,
+  Text,
+} from "@chakra-ui/react";
 import axios from "axios";
+import ttb from "../../assets/zyro-image.png";
+import io from "socket.io-client";
+import { Link } from "react-router-dom";
 
 function Signup() {
   const [isLoading, setIsLoading] = useState(false);
@@ -34,6 +45,7 @@ function Signup() {
               variant="filled"
               mb={3}
               type="email"
+              autoComplete="email"
               placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -42,6 +54,7 @@ function Signup() {
               variant="filled"
               mb={3}
               type="text"
+              autoComplete="name"
               placeholder="Name"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -50,6 +63,7 @@ function Signup() {
               variant="filled"
               mb={3}
               type="password"
+              autoComplete="current-password"
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -57,22 +71,25 @@ function Signup() {
             <Button
               width="full"
               mt={4}
-              colorScheme="teal"
+              colorScheme="orange"
               isLoading={isLoading}
               loadingText="Submitting"
               onClick={async (e) => {
                 e.preventDefault();
                 setIsLoading(true);
+                setError("");
+                setResponse("");
                 try {
-                  const response = await axios.post(
-                    "http://localhost:8080/api/register",
-                    {
-                      email,
-                      name,
-                      password,
-                    }
-                  );
-                  setResponse(response.data.message);
+                  const response = await axios.post("/api/register", {
+                    email,
+                    name,
+                    password,
+                  });
+                  if (response.status === 200) {
+                    setResponse(response.data.message);
+                  } else {
+                    setError(response.data.message);
+                  }
                 } catch (error) {
                   setError(error.response.data.message);
                 }
@@ -93,9 +110,15 @@ function Signup() {
             {response}
           </Text>
         )}
+        <Text mt={4} textAlign="center">
+          Already have an account?{" "}
+          <Link style={{ color: "#DE6A1F" }} to="/login">
+            Login
+          </Link>
+        </Text>
       </Box>
     </Flex>
   );
 }
 
-export default Signup
+export default Signup;
