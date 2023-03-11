@@ -28,11 +28,11 @@ router.post("/", async (req, res) => {
       return res.status(400).json(error.details[0].message);
     }
 
-    const user = await User.find({ email: req.body.email });
+    const user = await User.findOne({ email: req.body.email });
 
-    if (user.length > 0) {
-      if (user[0].password === req.body.password) {
-        return res.status(200).json({ message: "Welcome back!" });
+    if (user) {
+      if (user.password === req.body.password) {
+        return res.status(200).json({ message: "Welcome back!", user: user });
       } else {
         return res.status(400).json({ message: "Incorrect password" });
       }

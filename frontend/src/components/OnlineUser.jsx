@@ -1,27 +1,44 @@
 import React from "react";
 
-import { Text, Heading, Flex, Box } from "@chakra-ui/react";
+import { Text, Heading, Flex, Box, AbsoluteCenter } from "@chakra-ui/react";
 
-const OnlineUser = ({ socket }) => {
-  const [users, setUsers] = React.useState([]);
+const OnlineUser = () => {
+  const users = React.useRef([]);
+  const [userArray, setUsers] = React.useState([]);
 
-  React.useEffect(() => {
-    socket.on("newUserResponse", (data) => {
-      setUsers(data);
-    });
+  // React.useEffect(() => {
+  //   socket.on("newUserResponse", (data) => {
+  //     users.current = data;
+  //     setUsers(JSON.parse(JSON.stringify(data)) || []);
+  //   });
 
-    socket.on("removeUserResponse", (data) => {
-      setUsers(data);
-    });
-  }, []);
+  //   socket.on("removeUserResponse", (data) => {
+  //     users.current = data;
+  //     setUsers(data);
+  //   });
+
+  //   if (users.current.length === 0) {
+  //     users.current = [];
+  //     setUsers([]);
+  //   }
+
+  //   return () => {
+  //     socket.disconnect();
+  //   };
+  // }, []);
 
   return (
-    <Box p={8} maxWidth="400px" borderWidth={1} borderRadius={8} boxShadow="lg">
+    <Box pos={"fixed"} right={"0"} w={"300px"} h={"100vh"} bg={"gray.200"}>
       <Heading textAlign={"center"}>Online Users</Heading>
       <Flex direction="column" overflow={"auto"} h={"300px"}>
-        {users.map((user) => (
-          <Text key={user.id}>
-            {user.username} socketid: {user.id}
+        {userArray?.length === 0 && (
+          <Text py={4} textAlign={"center"} w={"full"}>
+            No users online
+          </Text>
+        )}
+        {userArray.map((user, i) => (
+          <Text key={i} py={4} textAlign={"center"} w={"full"}>
+            {user?.name}
           </Text>
         ))}
       </Flex>

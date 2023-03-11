@@ -3,11 +3,11 @@ import User from "../../models/User.js";
 const router = Router();
 
 router.get("/", async (req, res) => {
-  const { name } = req.query;
-
+  const { email } = req.query;
+  console.log(email);
   try {
-    const user = await User.find({ name: name });
-    if (user.length > 0) {
+    const user = await User.findOne({ email: email });
+    if (user) {
       return res.status(200).json(user);
     } else {
       return res.status(404).json({ message: "User not found" });

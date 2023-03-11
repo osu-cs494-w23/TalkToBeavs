@@ -1,14 +1,30 @@
 import React from "react";
 import { Text, Heading, Flex, Box } from "@chakra-ui/react";
 import io from "socket.io-client";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../components/AuthProvider";
 
 const VideoLobby = () => {
-  const socket = io("http://localhost:8080", {
-    forceNew: false,
-  });
+  const socket = io("http://localhost:8080");
+  const { user } = React.useContext(AuthContext);
+  const navigate = useNavigate();
 
   React.useEffect(() => {
-    socket.emit("joinQueue", { name: "tom" });
+    let email = localStorage.getItem("email");
+    console.log("email: " + email);
+
+    socket.on("connect", () => {
+      console.log("Connected to the server");
+      socket.emit("joinQueue", { name: user.email });
+    });
+
+    socket.on("disconnect", () => {
+      console.log("Disconnected from the server");
+    });
+
+    return () => {
+      socket.disconnect();
+    };
   }, []);
   return (
     <Flex

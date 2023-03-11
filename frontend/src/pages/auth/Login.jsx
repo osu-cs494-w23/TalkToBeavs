@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import {
   Box,
   Button,
@@ -11,6 +11,7 @@ import {
 import axios from "axios";
 import ttb from "../../assets/zyro-image.png";
 import { Link, useNavigate } from "react-router-dom";
+import { AuthContext } from "../../components/AuthProvider";
 
 function Login() {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ function Login() {
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [response, setResponse] = useState("");
+  const { login } = useContext(AuthContext);
 
   return (
     <Flex
@@ -28,7 +30,6 @@ function Login() {
       minH="100vh"
       bg="gray.100"
     >
-      <Image src={ttb} alt="ttb" height="150px" pos={"absolute"} top={0} />
       <Box
         p={8}
         maxWidth="500px"
@@ -71,16 +72,14 @@ function Login() {
                 setError("");
                 setResponse("");
                 try {
-                  const response = await axios.post(
-                    "/api/login",
-                    {
-                      email,
-                      password,
-                    }
-                  );
+                  const response = await login(email, password);
                   setTimeout(() => {
                     if (response.status === 200) {
                       setResponse(response.data.message);
+                      localStorage.setItem(
+                        "email",
+                        JSON.stringify(response.data.user.email)
+                      );
                       setTimeout(() => {
                         navigate("/home");
                       }, 500);

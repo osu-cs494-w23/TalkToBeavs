@@ -29,7 +29,6 @@ function Signup() {
       minH="100vh"
       bg="gray.100"
     >
-      <Image src={ttb} alt="ttb" height="150px" pos={"absolute"} top={0} />
       <Box
         p={8}
         maxWidth="500px"

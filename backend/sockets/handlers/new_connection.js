@@ -18,9 +18,19 @@ const newConnection = (socket, io) => {
 
   socket.on("disconnect", (socket) => {
     console.log(`[Backend ⚡️]: Disconnected!`);
-    users = users.filter((user) => user.socketId !== socket.id);
+    users.pop();
     io.emit("removeUserResponse", users);
   });
+
+   socket.on("sdp", (data) => {
+     socket.broadcast.emit("sdp", data);
+   });
+
+   socket.on("candidate", (data) => {
+     socket.broadcast.emit("candidate", data);
+   });
+
+   socket.emit("connection", null);
 
   // Add the queue options handler
   queue_options.default(socket, io);
