@@ -24,7 +24,24 @@ function Login() {
   const [response, setResponse] = useState("");
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-
+  const handleClick = (e) => {
+    if (!e.target.clickedOnce) {
+      // First click event
+      //console.log("Button clicked once");
+      
+      // Programmatically trigger a second click event after a short delay
+      setTimeout(() => {
+        const event = new MouseEvent('click', {
+          bubbles: true,
+          cancelable: true,
+          view: window
+        });
+        e.target.clickedOnce = true;
+        e.target.dispatchEvent(event);
+        
+      }, 1);
+    }
+  };
   return (
     <Flex
       direction="column"
@@ -77,25 +94,30 @@ function Login() {
 
                 try {
                   setLoading(true);
-                  dispatch(loginUser(values));
+                  await dispatch(loginUser(values));
+                  {handleClick(e)}
 
                   if (user.error === "Login Failed" || user.error === null) {
                     setTimeout(() => {
                       setError("Login Failed");
                       setLoading(false);
+                      e.target.clickedOnce = false;
                     }, 2000);
                   }
 
-                  if (user !== null) {
+                  if (user.user !== null) {
+                    console.log(user.isLoading)
                     setTimeout(() => {
                       setResponse("Login Successful");
                       setLoading(false);
+                      console.log(user.user)
                       navigate("/home");
                     }, 2000);
                   }
                 } catch (error) {
                   setLoading(false);
                   setError("Login Failed");
+                  e.target.clickedOnce = false;
                 }
               }}
             >

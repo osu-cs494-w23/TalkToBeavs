@@ -11,7 +11,9 @@ import {
 import axios from "axios";
 import ttb from "../../assets/logo.png";
 import io from "socket.io-client";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { registerUser, selectUser } from "../../redux/slices/UserSlice";
+import { useDispatch, useSelector } from "react-redux";
 
 function Signup() {
   const [isLoading, setIsLoading] = useState(false);
@@ -20,6 +22,27 @@ function Signup() {
   const [error, setError] = useState("");
   const [email, setEmail] = useState("");
   const [response, setResponse] = useState("");
+  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
+  const navigate = useNavigate();
+  const handleClick = (e) => {
+    if (!e.target.clickedOnce) {
+      // First click event
+      //console.log("Button clicked once");
+      
+      // Programmatically trigger a second click event after a short delay
+      setTimeout(() => {
+        const event = new MouseEvent('click', {
+          bubbles: true,
+          cancelable: true,
+          view: window
+        });
+        e.target.clickedOnce = true;
+        e.target.dispatchEvent(event);
+        
+      }, 1);
+    }
+  };
 
   return (
     <Flex
@@ -79,21 +102,39 @@ function Signup() {
                 setIsLoading(true);
                 setError("");
                 setResponse("");
+                const values = {
+                  email,
+                  name,
+                  password,
+                };
                 try {
-                  const response = await axios.post("/api/register", {
-                    email,
-                    name,
-                    password,
-                  });
-                  if (response.status === 200) {
-                    setResponse(response.data.message);
+                  await dispatch(registerUser(values));
+                  {handleClick(e)}
+                  setIsLoading(false);
+                  // console.log(user)
+                  if (user.message !== null && user.message !== undefined) {
+                    setTimeout(() => {
+                      setIsLoading(false);
+                      navigate("/login");
+                    }, 2000);
+                    
                   } else {
-                    setError(response.data.message);
-                  }
+                    setTimeout(() => {
+                      setError("Register Failed");
+                      setIsLoading(false);
+                      e.target.clickedOnce = false;
+                    }, 2000);
+                  }          
+                  //console.log()
                 } catch (error) {
-                  setError(error.response.data.message);
+                  //setError(error.response.data.message);
+                  console.log(error)
+                  setTimeout(() => {
+                    setError(error);
+                    setIsLoading(false);
+                    e.target.clickedOnce = false;
+                  }, 2000);
                 }
-                setIsLoading(false);
               }}
             >
               Submit
