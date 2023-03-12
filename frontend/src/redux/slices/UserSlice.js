@@ -20,7 +20,7 @@ export const registerUser = createAsyncThunk(
   "user/register",
   async (values, { rejectWithValue }) => {
     try {
-      const response = await axios.post("/api/auth/register", values);
+      const response = await axios.post("http://localhost:8080/api/auth/register", values);
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response.data);
@@ -78,6 +78,7 @@ const userSlice = createSlice({
       state.isLoggedIn = false;
       state.message = action.payload.message;
       state.isLoading = false;
+      state.error = null;
     });
     builder.addCase(registerUser.pending, (state, action) => {
       state.isLoading = true;

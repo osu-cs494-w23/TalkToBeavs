@@ -110,6 +110,7 @@ function Login() {
                     setTimeout(() => {
                       setResponse("Login Successful");
                       setLoading(false);
+                      console.log(user.user)
                       navigate("/home");
                     }, 2000);
                   }
