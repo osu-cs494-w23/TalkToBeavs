@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode, useEffect } from "react";
 import {
   IconButton,
   Avatar,
@@ -13,6 +13,7 @@ import {
   Drawer,
   DrawerContent,
   Text,
+  useMediaQuery,
   useDisclosure,
   Menu,
   MenuButton,
@@ -21,6 +22,7 @@ import {
   MenuList,
   Image,
   DrawerFooter,
+  Heading,
 } from "@chakra-ui/react";
 import {
   FiHome,
@@ -33,41 +35,61 @@ import {
   FiChevronDown,
 } from "react-icons/fi";
 import ttb from "../../assets/logo.png";
+import { CgProfile } from "react-icons/cg";
+import { SlLogout } from "react-icons/sl";
+import { NavLink, useLocation } from "react-router-dom";
+import OnlineUser from "../OnlineUser";
+import { useDispatch } from "react-redux";
+import { loadRandomUser } from "../../redux/slices/UserSlice";
+import TalkToBeavs from "../text/TalkToBeavs";
 
 const LinkItems = [
-  { name: "Home", icon: FiHome },
-  { name: "Trending", icon: FiTrendingUp },
-  { name: "Explore", icon: FiCompass },
-  { name: "Favourites", icon: FiStar },
-  { name: "Settings", icon: FiSettings },
+  { name: "Home", icon: FiHome, link: "/home" },
+  { name: "Profile", icon: CgProfile, link: "/profile" },
+  { name: "Feed", icon: FiCompass, link: "/feed" },
+  { name: "Logout", icon: SlLogout, link: `/logout` },
 ];
 
 function SidebarWithHeader({ children }) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [isMobile] = useMediaQuery("(max-width: 768px)");
+  const dispatch = useDispatch();
+  const location = useLocation();
+  useEffect(() => {
+    dispatch(loadRandomUser());
+  }, [dispatch]);
+
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
-      <SidebarContent
-        onClose={() => onClose}
-        display={{ base: "none", md: "block" }}
-      />
-      <Drawer
-        autoFocus={false}
-        isOpen={isOpen}
-        placement="left"
-        onClose={onClose}
-        returnFocusOnClose={false}
-        onOverlayClick={onClose}
-        size="full"
-      >
-        <DrawerContent>
-          <SidebarContent onClose={onClose} />
-        </DrawerContent>
-      </Drawer>
-      {/* mobilenav */}
-      <MobileNav onOpen={onOpen} />
-      <Box ml={{ base: 0, md: 60 }} p="4">
-        {children}
-      </Box>
+      <>
+        {location.pathname !== "/logout" &&
+          location.pathname !== "/login" &&
+          location.pathname !== "register" &&
+          location.pathname !== "/" && (
+            <SidebarContent
+              onClose={() => onClose}
+              display={{ base: "none", md: "block" }}
+            />
+          )}
+
+        <Drawer
+          autoFocus={false}
+          isOpen={isMobile ? isOpen : false}
+          placement="left"
+          onClose={onClose}
+          returnFocusOnClose={false}
+          onOverlayClick={onClose}
+          size="xs"
+        >
+          <DrawerContent>
+            <SidebarContent onClose={onClose} />
+          </DrawerContent>
+        </Drawer>
+        {/* mobilenav */}
+        {isMobile && <MobileNav onOpen={onOpen} />}
+
+        <Box>{children}</Box>
+      </>
     </Box>
   );
 }
@@ -82,17 +104,21 @@ const SidebarContent = ({ onClose, ...rest }) => {
       w={{ base: "full", md: 60 }}
       pos="fixed"
       h="full"
+      top={0}
       {...rest}
     >
-      <Flex h="20" alignItems="center" mx="8" justifyContent="space-between">
-        <Image src={ttb} alt="Logo" />
-        <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
-      </Flex>
+      {/* <Flex h="10" alignItems="center" mx="8" justifyContent="space-between"> */}
+
+      <Image src={ttb} alt="Logo" />
+
+      <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
+      {/* </Flex> */}
       {LinkItems.map((link) => (
-        <NavItem key={link.name} icon={link.icon}>
-          {link.name}
+        <NavItem key={link} icon={link.icon}>
+          {link}
         </NavItem>
       ))}
+      {/* <OnlineUser /> */}
     </Box>
   );
 };
@@ -100,19 +126,32 @@ const SidebarContent = ({ onClose, ...rest }) => {
 const NavItem = ({ icon, children, ...rest }) => {
   return (
     <Link
-      href="#"
       style={{ textDecoration: "none" }}
       _focus={{ boxShadow: "none" }}
+      to={children.link}
+      as={NavLink}
+      _activeLink={{
+        color: "orange.500",
+      }}
     >
       <Flex
         align="center"
         p="4"
         mx="4"
+        my={4}
+        gap={4}
+        fontSize={"xl"}
         borderRadius="lg"
         role="group"
         cursor="pointer"
+        transition={"all 0.3s ease-in-out"}
         _hover={{
-          bg: "cyan.400",
+          boxShadow: "rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px",
+          transform: "scale(1.05)",
+          padding: "1rem",
+          cursor: "pointer",
+          borderRadius: "0.5rem",
+          bg: "orange.500",
           color: "white",
         }}
         {...rest}
@@ -120,22 +159,25 @@ const NavItem = ({ icon, children, ...rest }) => {
         {icon && (
           <Icon
             mr="4"
-            fontSize="16"
+            fontSize="24"
             _groupHover={{
               color: "white",
             }}
             as={icon}
           />
         )}
-        {children}
+        {children.name}
       </Flex>
     </Link>
   );
 };
 
 const MobileNav = ({ onOpen, ...rest }) => {
+  const location = useLocation();
+
   return (
     <Flex
+      // display={{ base: "flex", md: "none" }}
       ml={{ base: 0, md: 60 }}
       px={{ base: 4, md: 4 }}
       height="20"
@@ -143,9 +185,17 @@ const MobileNav = ({ onOpen, ...rest }) => {
       bg={useColorModeValue("white", "gray.900")}
       borderBottomWidth="1px"
       borderBottomColor={useColorModeValue("gray.200", "gray.700")}
-      justifyContent={{ base: "space-between", md: "flex-end" }}
+      justifyContent="flex-end"
       {...rest}
     >
+      {location.pathname.split("/")[1] !== "home" && (
+        <Flex alignItems="center" justifyContent="center" w="full">
+          <TalkToBeavs />
+          {/* <Heading size="2xl" color="gray.900">
+          {location.pathname.split("/")[1]}
+        </Heading> */}
+        </Flex>
+      )}
       <IconButton
         display={{ base: "flex", md: "none" }}
         onClick={onOpen}

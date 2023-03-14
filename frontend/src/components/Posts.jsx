@@ -1,17 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
-import {
-  Box,
-  Flex,
-  IconButton,
-  Text,
-  Tooltip,
-  Spacer
-} from "@chakra-ui/react";
+import { Box, Flex, IconButton, Text, Tooltip, Spacer } from "@chakra-ui/react";
 import { ArrowDownIcon, ArrowUpIcon } from "@chakra-ui/icons";
 import { upvotePost, downvotePost } from "../redux/slices/FeedSlice";
 
-const Post = ({ post }) => {
+const Posts = ({ post }) => {
   const [isUpvoted, setIsUpvoted] = useState(false);
   const [isDownvoted, setIsDownvoted] = useState(false);
 
@@ -99,4 +92,4 @@ const Post = ({ post }) => {
   );
 };
 
-export default Post;
+export default Posts;

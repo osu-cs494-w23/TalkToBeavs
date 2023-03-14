@@ -1,5 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import usersJson from "../../data/users.json";
+
+const mappedUsers = usersJson.map((user) => {
+  return {
+    ...user,
+  };
+});
 
 export const loginUser = createAsyncThunk(
   "user/login",
@@ -20,7 +27,10 @@ export const registerUser = createAsyncThunk(
   "user/register",
   async (values, { rejectWithValue }) => {
     try {
-      const response = await axios.post("http://localhost:8080/api/auth/register", values);
+      const response = await axios.post(
+        "http://localhost:8080/api/auth/register",
+        values
+      );
       return response.data;
     } catch (err) {
       return rejectWithValue(err.response.data);
@@ -54,6 +64,11 @@ const userSlice = createSlice({
   reducers: {
     setUser: (state, action) => {
       state.user = action.payload;
+    },
+    loadRandomUser: (state, action) => {
+      const randomUser =
+        mappedUsers[Math.floor(Math.random() * mappedUsers.length)];
+      state.user = randomUser;
     },
   },
   extraReducers: (builder) => {
@@ -92,7 +107,7 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUser } = userSlice.actions;
+export const { setUser, loadRandomUser } = userSlice.actions;
 export default userSlice.reducer;
 
 export const selectUser = (state) => state.user;

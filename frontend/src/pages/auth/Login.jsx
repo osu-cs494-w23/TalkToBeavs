@@ -94,7 +94,7 @@ function Login() {
 
                 try {
                   setLoading(true);
-                  await dispatch(loginUser(values));
+                  dispatch(loginUser(values));
                   {handleClick(e)}
 
                   if (user.error === "Login Failed" || user.error === null) {
