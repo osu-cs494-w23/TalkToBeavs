@@ -10,62 +10,29 @@ export const loadPosts = createAsyncThunk('feed/loadPosts', async () => {
   return response.data.posts
 })
 
+export const createPost = createAsyncThunk(
+  'feed/createPost', async (post, { rejectWithValue }) => {
+    try {
+      const response = await axios.post('http://localhost:8080/api/feed/create_post', post)
+      return response.data.post;
+    } catch (err) {
+      return rejectWithValue(err.response.data)
+    }
+  }
+)
+
 
 const feedSlice = createSlice({
     name: 'feed',
     initialState,
-  reducers: {
-    addPost: (state, action) => {
-      state.posts.push(action.payload)
-    },
-    setAllPosts: (state, action) => {
-      state.posts = action.payload
-    },
-    upvotePost: (state, action) => {
-      const index = state.posts.findIndex(
-        (post) => post._id === action.payload._id
-      )
-      if (index !== -1) {
-        state.posts[index].rating += 1
-        // TODO:
-        // update the state.posts[index].rating += 1 in the MongoDB right here
-      }
-    },
-    downvotePost: (state, action) => {
-      const index = state.posts.findIndex(
-        (post) => post._id === action.payload._id
-      )
-      if (index !== -1) {
-        state.posts[index].rating -= 1
-        // TODO:
-        // update the state.posts[index].rating -= 1 in the MongoDB right here
-      }
-    },
-    setAllPosts: (state, action) => {
-      state.posts = action.payload;
-    },
-    upvotePost: (state, action) => {
-      console.log(action.payload)
-      const index = state.posts.findIndex((post) => post._id === action.payload._id);
-      if (index !== -1) {
-        state.posts[index].rating += 1;
-        // TODO:
-        // update the state.posts[index].rating += 1 in the MongoDB right here
-      }
-    },
-    downvotePost: (state, action) => {
-      const index = state.posts.findIndex((post) => post._id === action.payload._id);
-      if (index !== -1) {
-        state.posts[index].rating -= 1;
-        // TODO:
-        // update the state.posts[index].rating -= 1 in the MongoDB right here
-      }
-    },
-  },
+  reducers: {},
   extraReducers: {
     [loadPosts.fulfilled]: (state, action) => {
       state.posts = action.payload[0].posts;
     },
+    [createPost.fulfilled]: (state, action) => {
+      state.posts.unshift(action.payload);
+    }
   },
 }
 );

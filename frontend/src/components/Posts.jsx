@@ -68,7 +68,7 @@ const Posts = ({ post }) => {
                     </Tooltip>
 
                     <Text fontSize="sm" color="gray.500" mr={2}>
-                        {post.rating}
+                        {post.upvotes + post.downvotes}
                     </Text>
 
                     <Tooltip label="Downvote" aria-label="Downvote">
@@ -85,7 +85,7 @@ const Posts = ({ post }) => {
 
                 <Box textAlign="right">
                     <Text fontSize="sm" color="gray.500">
-                        {post.postedBy}
+                        {post.postedBy.split('@')[0]}
                     </Text>
                 </Box>
             </Flex>

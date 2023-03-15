@@ -20,7 +20,7 @@ import {
 } from '@chakra-ui/react'
 import { EditIcon } from '@chakra-ui/icons'
 
-import { setAllPosts, selectAllPosts, loadPosts } from '../../redux/slices/FeedSlice'
+import { setAllPosts, selectAllPosts, loadPosts, createPost } from '../../redux/slices/FeedSlice'
 import OnlineUser from '../../components/OnlineUser'
 import CreatePostModal from '../../components/CreatePostModal'
 import { useDispatch, useSelector } from 'react-redux'
@@ -43,7 +43,7 @@ function Home() {
 
 
     const handleValidPost = (post) => {
-        setPosts([...allPosts, post])
+        dispatch(createPost(post))
     }
 
     return allPosts && (

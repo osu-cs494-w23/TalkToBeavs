@@ -30,11 +30,8 @@ export default function CreatePostModal({ isOpen, onClose, postedBy, handleValid
                   setError(true);
             } else {
                   let post = {
-                        id: userData._id,
-                        rating: 0,
                         content: content,
-                        postedBy: userData.name,
-                        createdAt: new Date().toLocaleString().split(',')[0]
+                        postedBy: userData.email,
                   }
                   setContent('')
                   setError(false);
