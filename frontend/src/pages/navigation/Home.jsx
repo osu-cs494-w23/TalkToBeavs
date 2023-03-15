@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Post from '../../components/Posts'
 import {
     Text,
@@ -27,96 +27,28 @@ import CreatePostModal from '../../components/CreatePostModal'
 //TODO: fetch this data from the store/MongoDB using setAllPosts to fetch all the existing post data and
 // selectAllPosts to get it from the store. We need to figure out whether we want to do the business MongoDB logic
 // within the store or here within the component
-const posts = [
-    {
-        _id: 0,
-        content: 'This is my first post',
-        rating: 0,
-        postedBy: 'artem',
-        createdAt: '1/1/2023',
-    },
-    {
-        _id: 1,
-        content: 'This is my first post',
-        rating: 3,
-        postedBy: 'colby',
-        createdAt: '1/1/2023',
-    },
-    {
-        _id: 1,
-        content: 'This is my first post',
-        rating: 3,
-        postedBy: 'colby',
-        createdAt: '1/1/2023',
-    },
-    {
-        _id: 1,
-        content: 'This is my first post',
-        rating: 3,
-        postedBy: 'colby',
-        createdAt: '1/1/2023',
-    },
-    {
-        _id: 1,
-        content: 'This is my first post',
-        rating: 3,
-        postedBy: 'colby',
-        createdAt: '1/1/2023',
-    },
-    {
-        _id: 1,
-        content: 'This is my first post',
-        rating: 3,
-        postedBy: 'colby',
-        createdAt: '1/1/2023',
-    },
-    {
-        _id: 0,
-        content: 'This is my first post',
-        rating: 0,
-        postedBy: 'artem',
-        createdAt: '1/1/2023',
-    },
-    {
-        _id: 1,
-        content: 'This is my first post',
-        rating: 3,
-        postedBy: 'colby',
-        createdAt: '1/1/2023',
-    },
-    {
-        _id: 1,
-        content: 'This is my first post',
-        rating: 3,
-        postedBy: 'colby',
-        createdAt: '1/1/2023',
-    },
-    {
-        _id: 1,
-        content: 'This is my first post',
-        rating: 3,
-        postedBy: 'colby',
-        createdAt: '1/1/2023',
-    },
-    {
-        _id: 1,
-        content: 'This is my first post',
-        rating: 3,
-        postedBy: 'colby',
-        createdAt: '1/1/2023',
-    },
-    {
-        _id: 1,
-        content: 'This is my first post',
-        rating: 3,
-        postedBy: 'colby',
-        createdAt: '1/1/2023',
-    },
-]
+
 
 function Home() {
     const [isMobile] = useMediaQuery('(max-width: 500px)')
     const { isOpen, onOpen, onClose } = useDisclosure()
+
+    const [posts, setPosts] = useState(
+        [
+            {
+                _id: 0,
+                content: 'This is my first post',
+                rating: 0,
+                postedBy: 'artem',
+                createdAt: '1/1/2023',
+            }
+        ]
+    )
+
+
+    const handleValidPost = (post) => {
+        setPosts([...posts, post])
+    }
 
     return (
         <Flex w="100%" h="100vh" direction="column" justify="center">
@@ -138,7 +70,7 @@ function Home() {
                     px={12}
                 />
 
-                <CreatePostModal isOpen={isOpen} onClose={onClose} />
+                <CreatePostModal isOpen={isOpen} onClose={onClose} postedBy={'artem'} handleValidPost={handleValidPost} />
 
                 <Text
                     textAlign="center"
