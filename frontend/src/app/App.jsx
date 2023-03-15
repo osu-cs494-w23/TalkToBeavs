@@ -34,9 +34,6 @@ import TextChat from '../pages/chat/TextChat'
 import Profile from '../pages/profile/Profile'
 
 const App = () => {
-    // useEffect(() => {
-    //   getUser(email);
-    // }, []);
 
     return (
         <Provider store={store}>

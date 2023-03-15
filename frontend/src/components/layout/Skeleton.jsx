@@ -37,11 +37,12 @@ import {
 import ttb from '../../assets/logo.png'
 import { CgProfile } from 'react-icons/cg'
 import { SlLogout } from 'react-icons/sl'
-import { NavLink, useLocation } from 'react-router-dom'
+import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import OnlineUser from '../OnlineUser'
 import { useDispatch } from 'react-redux'
 
 import TalkToBeavs from '../text/TalkToBeavs'
+import { loadUserData } from '../../redux/slices/UserSlice'
 
 const LinkItems = [
     { name: 'Home', icon: FiHome, link: '/home' },
@@ -55,6 +56,15 @@ function SidebarWithHeader({ children }) {
     const [isMobile] = useMediaQuery('(max-width: 768px)')
     const dispatch = useDispatch()
     const location = useLocation()
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (localStorage.getItem('token').includes("@oregonstate.edu")) {
+            dispatch(loadUserData(localStorage.getItem('token')))
+        } else {
+            navigate('/login')
+        }
+    }, [])
 
     return (
         <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>

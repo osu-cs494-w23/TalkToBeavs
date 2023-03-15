@@ -8,20 +8,20 @@ const mappedUsers = usersJson.map((user) => {
     }
 })
 
-// export const loginUser = createAsyncThunk(
-//   "user/login",
-//   async (values, { rejectWithValue }) => {
-//     try {
-//       const response = await axios.post(
-//         "http://localhost:8080/api/auth/login",
-//         values
-//       );
-//       return response.data;
-//     } catch (err) {
-//       return rejectWithValue(err.response.data);
-//     }
-//   }
-// );
+export const loadUserData = createAsyncThunk(
+    'user/loadUserData',
+    async (email, { rejectWithValue }) => {
+        try {
+            const response = await axios.get(
+                `http://localhost:8080/api/auth/load_user?email=${email}`
+            )
+            return response.data
+        } catch (err) {
+            return rejectWithValue(err.response.data)
+        }
+    }
+)
+
 
 export const registerUser = createAsyncThunk(
     'user/register',
@@ -101,6 +101,13 @@ const userSlice = createSlice({
             state.message = action.payload.message
             state.isLoading = false
             state.error = 'Register Failed'
+        })
+        builder.addCase(loadUserData.fulfilled, (state, action) => {
+            state.data = action.payload.user
+            state.isLoggedIn = true
+            state.isLoading = false
+            state.error = null
+            state.message = null
         })
     },
 })

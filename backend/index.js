@@ -6,6 +6,7 @@ import dotenv from "dotenv";
 // Auth
 import register from "./routes/auth/register.js";
 import login from "./routes/auth/login.js";
+import load_user from "./routes/auth/load_user.js";
 
 // Social
 import follow_user from "./routes/social/follow_user.js";
@@ -32,6 +33,7 @@ app.use(tracker);
 // Routes
 app.use("/api/auth/register", register);
 app.use("/api/auth/login", login);
+app.use("/api/auth/load_user", load_user);
 app.use("/api/social/follow_user", follow_user);
 app.use("/api/feed/create_post", create_post);
 app.use("/api/feed/get_posts", get_posts);
