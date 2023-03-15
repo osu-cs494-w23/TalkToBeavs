@@ -2,7 +2,7 @@
 backend/node_modules
 backend/.env
 
-
+.DS_Store
 
 # Frontend Ignores
 frontend/node_modules
