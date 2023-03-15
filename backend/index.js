@@ -10,6 +10,7 @@ import login from "./routes/auth/login.js";
 // Social
 import follow_user from "./routes/social/follow_user.js";
 import create_post from "./routes/feed/create_post.js";
+import get_posts from "./routes/feed/get_posts.js";
 
 // Sockets
 import { Server, Socket } from "socket.io";
@@ -33,6 +34,7 @@ app.use("/api/auth/register", register);
 app.use("/api/auth/login", login);
 app.use("/api/social/follow_user", follow_user);
 app.use("/api/feed/create_post", create_post);
+app.use("/api/feed/get_posts", get_posts);
 
 // Default Route
 app.get("/", (req, res) => {

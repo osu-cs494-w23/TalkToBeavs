@@ -35,7 +35,28 @@ const feedSlice = createSlice({
             }
         },
     },
-})
+    setAllPosts: (state, action) => {
+      state.posts = action.payload;
+    },
+    upvotePost: (state, action) => {
+      console.log(action.payload)
+      const index = state.posts.findIndex((post) => post._id === action.payload._id);
+      if (index !== -1) {
+        state.posts[index].rating += 1;
+        // TODO:
+        // update the state.posts[index].rating += 1 in the MongoDB right here
+      }
+    },
+    downvotePost: (state, action) => {
+      const index = state.posts.findIndex((post) => post._id === action.payload._id);
+      if (index !== -1) {
+        state.posts[index].rating -= 1;
+        // TODO:
+        // update the state.posts[index].rating -= 1 in the MongoDB right here
+      }
+    },
+  },
+);
 
 export const { addPost, setAllPosts, upvotePost, downvotePost } =
     feedSlice.actions
