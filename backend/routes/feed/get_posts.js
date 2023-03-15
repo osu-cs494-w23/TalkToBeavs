@@ -6,10 +6,9 @@ const router = Router();
 
 router.get("/", async (req, res) => {
     try {
-        const feed = await Feed.find({});
-        let posts = feed.posts;
+        const feed = await Feed.find({}).populate("posts").exec();
     
-        return res.status(200).json({ message: "Posts retrieved", posts: posts });
+        return res.status(200).json({ message: "Posts retrieved", posts: feed });
     } catch (err) {
         return res.status(500).json({ error: err.message });
     }
