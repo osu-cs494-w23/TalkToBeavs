@@ -16,32 +16,62 @@ import { useDispatch, useSelector } from "react-redux";
 
 function Login() {
   const navigate = useNavigate();
-  const user = useSelector(selectUser);
-  const error = useSelector((state) => state.user.error);
+
+  const [error, setError] = useState("");
   const [password, setPassword] = useState("");
-  const [loginError, setError] = useState("");
   const [email, setEmail] = useState("");
   const [response, setResponse] = useState("");
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
-  const handleClick = (e) => {
-    if (!e.target.clickedOnce) {
-      // First click event
-      //console.log("Button clicked once");
-      
-      // Programmatically trigger a second click event after a short delay
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError("");
+    setResponse("");
+
+    if (email === "" || password === "") {
       setTimeout(() => {
-        const event = new MouseEvent('click', {
-          bubbles: true,
-          cancelable: true,
-          view: window
-        });
-        e.target.clickedOnce = true;
-        e.target.dispatchEvent(event);
-        
-      }, 1);
+        setLoading(false);
+        setError("Please fill in all fields");
+        return;
+      }, 1000);
+    }
+
+    const data = {
+      email,
+      password,
+    };
+
+    try {
+      const res = await axios.post(
+        "http://localhost:8080/api/auth/login",
+        data
+      );
+
+      if (res.status === 200) {
+        localStorage.setItem("token", res.data.user.email);
+        setTimeout(() => {
+          dispatch(loginUser(res.data.user));
+          setResponse("Login successful!");
+        }, 1000);
+        setTimeout(() => {
+          navigate("/home");
+          setLoading(false);
+        }, 2000);
+      } else {
+        setError("Login failed");
+        setTimeout(() => {
+          setLoading(false);
+        }, 1000);
+      }
+    } catch (err) {
+      console.log(err);
+      setLoading(false);
+      setError("Login failed");
     }
   };
+
   return (
     <Flex
       direction="column"
@@ -61,7 +91,7 @@ function Login() {
           <Heading>Login</Heading>
         </Box>
         <Box my={4} textAlign="left">
-          <form>
+          <form onSubmit={handleSubmit}>
             <Input
               variant="filled"
               mb={3}
@@ -84,51 +114,19 @@ function Login() {
               width="full"
               mt={4}
               colorScheme="orange"
-              isLoading={user.isLoading}
+              isLoading={loading}
               loadingText="Logging in..."
-              onClick={async (e) => {
-                const values = {
-                  email,
-                  password,
-                };
-
-                try {
-                  setLoading(true);
-                  dispatch(loginUser(values));
-                  {handleClick(e)}
-
-                  if (user.error === "Login Failed" || user.error === null) {
-                    setTimeout(() => {
-                      setError("Login Failed");
-                      setLoading(false);
-                      e.target.clickedOnce = false;
-                    }, 2000);
-                  }
-
-                  if (user.user !== null) {
-                    console.log(user.isLoading)
-                    setTimeout(() => {
-                      setResponse("Login Successful");
-                      setLoading(false);
-                      console.log(user.user)
-                      navigate("/home");
-                    }, 2000);
-                  }
-                } catch (error) {
-                  setLoading(false);
-                  setError("Login Failed");
-                  e.target.clickedOnce = false;
-                }
-              }}
+              type="submit"
+              onClick={handleSubmit}
             >
               Submit
             </Button>
           </form>
         </Box>
         <Box textAlign="center">
-          {user.error && (
+          {error && (
             <Text mt={4} textAlign="center" color="red.500">
-              {user.error}
+              {error}
             </Text>
           )}
           {response && (

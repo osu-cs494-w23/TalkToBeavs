@@ -14,12 +14,16 @@ import {
 } from "@chakra-ui/react";
 import TalkToBeavs from "../../components/text/TalkToBeavs";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { logoutUser } from "../../redux/slices/UserSlice";
 
 export default function Logout() {
   const toast = useToast();
+
   const { colorMode, toggleColorMode } = useColorMode();
   const seconds = 7;
   const navigate = useNavigate();
+  const dispatch = useDispatch();
   const [timeLeft, setTimeLeft] = useState(seconds);
 
   localStorage.removeItem("token");
@@ -27,6 +31,7 @@ export default function Logout() {
 
   useEffect(() => {
     localStorage.removeItem("token");
+    dispatch(logoutUser());
 
     if (timeLeft && window.location.pathname !== "/logout") {
       return;

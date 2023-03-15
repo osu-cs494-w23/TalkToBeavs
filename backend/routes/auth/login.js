@@ -16,16 +16,19 @@ router.post("/", async (req, res) => {
     const { error } = schema.validate(req.body);
 
     if (error) {
-      return res.status(400).send(error.details[0].message);
+      return res.status(401).json({ message: error.details[0].message });
     }
 
-    const user = await User.find({ email: req.body.email });
+    const user = await User.findOne({ email: req.body.email });
 
-    if (user.length > 0) {
+    if (user) {
       return res.status(200).json({ message: "Welcome Back!", user: user });
-    } else {
-      return res.status(400).json({ message: "User does not exist" });
     }
+
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }

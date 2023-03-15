@@ -8,20 +8,20 @@ const mappedUsers = usersJson.map((user) => {
   };
 });
 
-export const loginUser = createAsyncThunk(
-  "user/login",
-  async (values, { rejectWithValue }) => {
-    try {
-      const response = await axios.post(
-        "http://localhost:8080/api/auth/login",
-        values
-      );
-      return response.data;
-    } catch (err) {
-      return rejectWithValue(err.response.data);
-    }
-  }
-);
+// export const loginUser = createAsyncThunk(
+//   "user/login",
+//   async (values, { rejectWithValue }) => {
+//     try {
+//       const response = await axios.post(
+//         "http://localhost:8080/api/auth/login",
+//         values
+//       );
+//       return response.data;
+//     } catch (err) {
+//       return rejectWithValue(err.response.data);
+//     }
+//   }
+// );
 
 export const registerUser = createAsyncThunk(
   "user/register",
@@ -51,7 +51,7 @@ export const followUser = createAsyncThunk(
 );
 
 const initialState = {
-  user: null,
+  data: null,
   isLoggedIn: false,
   message: null,
   isLoading: false,
@@ -68,27 +68,24 @@ const userSlice = createSlice({
     loadRandomUser: (state, action) => {
       const randomUser =
         mappedUsers[Math.floor(Math.random() * mappedUsers.length)];
-      state.user = randomUser;
+      state.data = randomUser;
     },
-  },
-  extraReducers: (builder) => {
-    builder.addCase(loginUser.fulfilled, (state, action) => {
-      state.user = action.payload.user;
-      state.message = action.payload.message;
+    loginUser: (state, action) => {
+      state.data = action.payload;
       state.isLoggedIn = true;
       state.isLoading = false;
       state.error = null;
-    });
-    builder.addCase(loginUser.pending, (state, action) => {
-      state.isLoading = true;
-    });
-    builder.addCase(loginUser.rejected, (state, action) => {
-      state.user = null;
+      state.message = null;
+    },
+    logoutUser: (state) => {
+      state.data = null;
       state.isLoggedIn = false;
-      state.message = action.payload.message;
       state.isLoading = false;
-      state.error = "Login Failed";
-    });
+      state.error = null;
+      state.message = null;
+    },
+  },
+  extraReducers: (builder) => {
     builder.addCase(registerUser.fulfilled, (state, action) => {
       state.isLoggedIn = false;
       state.message = action.payload.message;
@@ -107,7 +104,8 @@ const userSlice = createSlice({
   },
 });
 
-export const { setUser, loadRandomUser } = userSlice.actions;
+export const { setUser, loadRandomUser, loginUser, logoutUser } =
+  userSlice.actions;
 export default userSlice.reducer;
 
 export const selectUser = (state) => state.user;

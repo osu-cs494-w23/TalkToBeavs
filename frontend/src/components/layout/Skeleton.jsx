@@ -55,9 +55,7 @@ function SidebarWithHeader({ children }) {
   const [isMobile] = useMediaQuery("(max-width: 768px)");
   const dispatch = useDispatch();
   const location = useLocation();
-  useEffect(() => {
-    dispatch(loadRandomUser());
-  }, [dispatch]);
+ 
 
   return (
     <Box minH="100vh" bg={useColorModeValue("gray.100", "gray.900")}>
@@ -113,8 +111,8 @@ const SidebarContent = ({ onClose, ...rest }) => {
 
       <CloseButton display={{ base: "flex", md: "none" }} onClick={onClose} />
       {/* </Flex> */}
-      {LinkItems.map((link) => (
-        <NavItem key={link} icon={link.icon}>
+      {LinkItems.map((link, i) => (
+        <NavItem key={i} icon={link.icon}>
           {link}
         </NavItem>
       ))}
