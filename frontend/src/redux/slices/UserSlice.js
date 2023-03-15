@@ -22,7 +22,6 @@ export const loadUserData = createAsyncThunk(
     }
 )
 
-
 export const registerUser = createAsyncThunk(
     'user/register',
     async (values, { rejectWithValue }) => {
@@ -116,10 +115,4 @@ export const { setUser, loadUser, loginUser, logoutUser } = userSlice.actions
 export default userSlice.reducer
 
 export const selectUser = (state) => state.data
-
-export const selectUserProfile = (action) => (state) => {
-    const onid = action
-    let email = onid + '@oregonstate.edu'
-    let user = mappedUsers.find((user) => user.email === email)
-    return user
-}
+export const selectUserProfile = (state) => state.data

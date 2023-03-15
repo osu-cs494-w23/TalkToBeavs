@@ -5,15 +5,13 @@ const router = Router()
 
 router.get('/', async (req, res) => {
     try {
-        const userEmail = req.query.email
+        const users = await User.find({}).select('name email online avatarImg')
 
-        const user = await User.findOne({ email: userEmail })
-
-        if (!user) {
-            return res.status(400).json({ error: 'User not found' })
+        if (!users) {
+            return res.status(404).json({ message: 'Users not found' })
         }
 
-        return res.status(200).json({ message: 'User loaded', user: user })
+        return res.status(200).json({ users: users })
     } catch (err) {
         return res.status(500).json({ error: err.message })
     }

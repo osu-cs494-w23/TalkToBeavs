@@ -28,7 +28,6 @@ const Lobby = () => {
             bg="gray.100"
         >
             <HStack>
-                <OnlineUser />
                 <Box
                     p={8}
                     maxWidth="400px"

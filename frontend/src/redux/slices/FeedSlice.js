@@ -6,36 +6,38 @@ const initialState = {
 }
 
 export const loadPosts = createAsyncThunk('feed/loadPosts', async () => {
-  const response = await axios.get('http://localhost:8080/api/feed/get_posts')
-  return response.data.posts
+    const response = await axios.get('http://localhost:8080/api/feed/get_posts')
+    return response.data.posts
 })
 
 export const createPost = createAsyncThunk(
-  'feed/createPost', async (post, { rejectWithValue }) => {
-    try {
-      const response = await axios.post('http://localhost:8080/api/feed/create_post', post)
-      return response.data.post;
-    } catch (err) {
-      return rejectWithValue(err.response.data)
+    'feed/createPost',
+    async (post, { rejectWithValue }) => {
+        try {
+            const response = await axios.post(
+                'http://localhost:8080/api/feed/create_post',
+                post
+            )
+            return response.data.post
+        } catch (err) {
+            return rejectWithValue(err.response.data)
+        }
     }
-  }
 )
-
 
 const feedSlice = createSlice({
     name: 'feed',
     initialState,
-  reducers: {},
-  extraReducers: {
-    [loadPosts.fulfilled]: (state, action) => {
-      state.posts = action.payload[0].posts;
+    reducers: {},
+    extraReducers: {
+        [loadPosts.fulfilled]: (state, action) => {
+            state.posts = action.payload[0].posts
+        },
+        [createPost.fulfilled]: (state, action) => {
+            state.posts.unshift(action.payload)
+        },
     },
-    [createPost.fulfilled]: (state, action) => {
-      state.posts.unshift(action.payload);
-    }
-  },
-}
-);
+})
 
 export const { addPost, setAllPosts, upvotePost, downvotePost } =
     feedSlice.actions

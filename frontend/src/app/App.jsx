@@ -5,6 +5,7 @@ import {
     Route,
     useNavigate,
     Outlet,
+    useLocation,
 } from 'react-router-dom'
 import io from 'socket.io-client'
 import { Provider } from 'react-redux'
@@ -34,7 +35,6 @@ import TextChat from '../pages/chat/TextChat'
 import Profile from '../pages/profile/Profile'
 
 const App = () => {
-
     return (
         <Provider store={store}>
             <BrowserRouter>

@@ -59,7 +59,7 @@ function SidebarWithHeader({ children }) {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (localStorage.getItem('token').includes("@oregonstate.edu")) {
+        if (localStorage.getItem('token')?.includes('@oregonstate.edu')) {
             dispatch(loadUserData(localStorage.getItem('token')))
         } else {
             navigate('/login')
@@ -68,6 +68,16 @@ function SidebarWithHeader({ children }) {
 
     return (
         <Box minH="100vh" bg={useColorModeValue('gray.100', 'gray.900')}>
+            <>
+                {location.pathname !== '/logout' &&
+                    location.pathname !== '/login' &&
+                    location.pathname !== 'register' &&
+                    location.pathname !== '/' && (
+                        <>
+                            <OnlineUser />
+                        </>
+                    )}
+            </>
             <>
                 {location.pathname !== '/logout' &&
                     location.pathname !== '/login' &&

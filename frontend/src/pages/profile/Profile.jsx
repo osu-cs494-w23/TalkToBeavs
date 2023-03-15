@@ -11,26 +11,21 @@ import {
     VStack,
 } from '@chakra-ui/react'
 import OnlineUser from '../../components/OnlineUser'
-import { useLocation, useParams } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import Posts from '../../components/Posts'
 import FollowButton from '../../components/FollowButton'
-import { useSelector, useDispatch } from 'react-redux'
-import {
-    loadUser,
-    selectUser,
-    selectUserProfile,
-} from '../../redux/slices/UserSlice'
+import { useDispatch } from 'react-redux'
+import useProfile from '../../hooks/useProfile'
 
 export default function Profile() {
     const { onid } = useParams()
-
-    const user = useSelector(selectUserProfile(onid))
+    const dispatch = useDispatch()
+    const profile = useProfile({ onid })
 
     return (
-        user && (
+        profile && (
             <>
                 <Box w="100%" h="100%" py={8}>
-                    <OnlineUser />
                     <Flex
                         direction="column"
                         align="center"
@@ -40,14 +35,14 @@ export default function Profile() {
                     >
                         <Avatar
                             size="2xl"
-                            name={user.name}
-                            src={user.avatarImg}
+                            name={profile.name}
+                            src={profile.avatarImg}
                             mb={4}
                         />
-                        <FollowButton user={user} />
+                        <FollowButton user={profile} />
                         <Heading as="h1" size="2xl" mb={4}>
-                            {user.name.charAt(0).toUpperCase() +
-                                user.name.slice(1)}
+                            {profile.name.charAt(0).toUpperCase() +
+                                profile.name.slice(1)}
                         </Heading>
                         <Divider
                             w={{
@@ -81,7 +76,7 @@ export default function Profile() {
                                     Followers
                                 </Text>
                                 <Text fontSize="xl" fontWeight="bold">
-                                    {user.followers.length}
+                                    {profile.followers.length}
                                 </Text>
                             </Box>
 
@@ -108,7 +103,7 @@ export default function Profile() {
                                     Following
                                 </Text>
                                 <Text fontSize="xl" fontWeight="bold">
-                                    {user.following.length}
+                                    {profile.following.length}
                                 </Text>
                             </Box>
                         </HStack>
@@ -136,7 +131,7 @@ export default function Profile() {
                             // h="100%"
                             my={8}
                         >
-                            {user.posts.map((post, i) => (
+                            {profile.posts.map((post, i) => (
                                 <Posts key={i} post={post} />
                             ))}
                         </Box>
