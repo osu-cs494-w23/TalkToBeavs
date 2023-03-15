@@ -3,6 +3,7 @@ import { useDispatch } from 'react-redux'
 import { Box, Flex, IconButton, Text, Tooltip, Spacer } from '@chakra-ui/react'
 import { ArrowDownIcon, ArrowUpIcon } from '@chakra-ui/icons'
 import { upvotePost, downvotePost } from '../redux/slices/FeedSlice'
+import moment from 'moment'
 
 const Posts = ({ post }) => {
     const [isUpvoted, setIsUpvoted] = useState(false)
@@ -48,7 +49,7 @@ const Posts = ({ post }) => {
 
             <Flex alignItems="center" mb={2}>
                 <Text fontSize="sm" color="gray.500">
-                    {post.createdAt}
+                    {moment(post.createdAt).calendar()}
                 </Text>
                 <Spacer />
             </Flex>

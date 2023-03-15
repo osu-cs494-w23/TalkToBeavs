@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Post from '../../components/Posts'
 import {
     Text,
@@ -20,9 +20,10 @@ import {
 } from '@chakra-ui/react'
 import { EditIcon } from '@chakra-ui/icons'
 
-import { setAllPosts, selectAllPosts } from '../../redux/slices/FeedSlice'
+import { setAllPosts, selectAllPosts, loadPosts } from '../../redux/slices/FeedSlice'
 import OnlineUser from '../../components/OnlineUser'
 import CreatePostModal from '../../components/CreatePostModal'
+import { useDispatch, useSelector } from 'react-redux'
 
 //TODO: fetch this data from the store/MongoDB using setAllPosts to fetch all the existing post data and
 // selectAllPosts to get it from the store. We need to figure out whether we want to do the business MongoDB logic
@@ -33,24 +34,19 @@ function Home() {
     const [isMobile] = useMediaQuery('(max-width: 500px)')
     const { isOpen, onOpen, onClose } = useDisclosure()
 
-    const [posts, setPosts] = useState(
-        [
-            {
-                _id: 0,
-                content: 'This is my first post',
-                rating: 0,
-                postedBy: 'artem',
-                createdAt: '1/1/2023',
-            }
-        ]
-    )
+    const dispatch = useDispatch()
+    const allPosts = useSelector(selectAllPosts)
+
+    useEffect(() => {
+        dispatch(loadPosts())
+    }, [])
 
 
     const handleValidPost = (post) => {
-        setPosts([...posts, post])
+        setPosts([...allPosts, post])
     }
 
-    return (
+    return allPosts && (
         <Flex w="100%" h="100vh" direction="column" justify="center">
             <OnlineUser />
 
@@ -92,7 +88,7 @@ function Home() {
                 <Divider w={'50%'} mb={4} />
             </Box>
             <Box h={'100vh'} overflow={'scroll'}>
-                {posts.map((post, i) => (
+                {allPosts.map((post, i) => (
                     <Post key={i} post={post} />
                 ))}
             </Box>

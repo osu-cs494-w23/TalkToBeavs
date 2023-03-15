@@ -24,7 +24,7 @@ router.post("/", async (req, res) => {
   }
 
   try {
-    const user = await User.findOne({ _id: postedBy });
+    const user = await User.findOne({ email: postedBy });
 
     if (!user) {
       return res.status(400).json({ error: "User not found" });
@@ -32,7 +32,7 @@ router.post("/", async (req, res) => {
 
     const post = new Post({
       content,
-      postedBy: user._id,
+      postedBy: user.email,
     });
 
     await post.save();

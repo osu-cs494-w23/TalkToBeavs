@@ -30,7 +30,7 @@ export default function CreatePostModal({ isOpen, onClose, postedBy, handleValid
                   setError(true);
             } else {
                   let post = {
-                        id: Math.floor(Math.random() * 1000000),
+                        id: userData._id,
                         rating: 0,
                         content: content,
                         postedBy: userData.name,

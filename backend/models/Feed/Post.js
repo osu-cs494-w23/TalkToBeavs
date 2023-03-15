@@ -18,7 +18,7 @@ const postSchema = new mongoose.Schema(
       default: 0,
     },
     postedBy: {
-      type: mongoose.Schema.Types.ObjectId,
+      type: String,
       required: true,
     },
   },
