@@ -1,40 +1,25 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect } from 'react'
 import Post from '../../components/Posts'
 import {
     Text,
-    Heading,
     Flex,
     Box,
     useMediaQuery,
-    Modal,
-    ModalOverlay,
-    ModalContent,
-    ModalHeader,
-    ModalFooter,
     useDisclosure,
-    ModalBody,
-    Button,
-    ModalCloseButton,
     Divider,
     IconButton,
 } from '@chakra-ui/react'
 import { EditIcon } from '@chakra-ui/icons'
-
 import {
-    setAllPosts,
     selectAllPosts,
     loadPosts,
     createPost,
 } from '../../redux/slices/FeedSlice'
-import OnlineUser from '../../components/OnlineUser'
 import CreatePostModal from '../../components/CreatePostModal'
 import { useDispatch, useSelector } from 'react-redux'
 
-//TODO: fetch this data from the store/MongoDB using setAllPosts to fetch all the existing post data and
-// selectAllPosts to get it from the store. We need to figure out whether we want to do the business MongoDB logic
-// within the store or here within the component
 
-function Home() {
+function Feed() {
     const [isMobile] = useMediaQuery('(max-width: 500px)')
     const { isOpen, onOpen, onClose } = useDisclosure()
 
@@ -104,4 +89,4 @@ function Home() {
     )
 }
 
-export default Home
+export default Feed

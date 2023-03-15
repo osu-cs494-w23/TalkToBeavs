@@ -23,9 +23,10 @@ import FourOhFour from '../pages/error/FourOhFour'
 import VideoLobby from '../pages/navigation/VideoLobby'
 import TextLobby from '../pages/navigation/TextLobby'
 import Lobby from '../pages/navigation/Lobby'
-import Home from '../pages/navigation/Home'
 import Landing from '../pages/navigation/Landing'
 import Logout from '../pages/navigation/Logout'
+
+import Feed from '../pages/feed/Feed'
 
 import Signup from '../pages/auth/Signup'
 import Login from '../pages/auth/Login'
@@ -45,10 +46,10 @@ const App = () => {
                         <Route path="/signup" element={<Signup />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/logout" element={<Logout />} />
-                        <Route path="/home" element={<Home />} />
 
                         <Route path="/profile/:onid" element={<Profile />} />
 
+                        <Route path="/feed" element={<Feed />} />
                         <Route path="/lobby" element={<Lobby />} />
 
                         <Route path="/video" element={<VideoLobby />} />
