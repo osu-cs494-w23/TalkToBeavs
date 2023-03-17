@@ -43,6 +43,7 @@ function Signup() {
 
       if (res.status === 201) {
         setTimeout(() => {
+        setError('')
         setIsLoading(false)
         console.log('success');
         setResponse('Signup successful!')

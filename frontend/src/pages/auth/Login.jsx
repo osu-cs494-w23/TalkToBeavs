@@ -56,6 +56,7 @@ function Login() {
             if (res.status === 200) {
                 localStorage.setItem('token', res.data.user.email)
                 setTimeout(() => {
+                    setError('')
                     dispatch(loginUser(res.data.user))
                     setResponse('Login successful!')
                 }, 1000)
