@@ -58,13 +58,17 @@ function Signup() {
         }, 1000)
     }
     } catch (err) {
+        console.error(err.response.data.message)
         setIsLoading(false)
         if (err.response.data.message === 'User already exists') {
             setError('User already exists')
-        } else {
+        } 
+        else if (err.response.data.message.substring(err.response.data.message.length - 71) === 'fails to match the required pattern: /^[a-zA-Z._%+-]+@oregonstate.edu$/') {
+            setError('Please use your Oregon State email')
+        }
+        else {
             setError('Signup failed')
         }
-        console.error(err.response.data.message)
     }
   };
 
