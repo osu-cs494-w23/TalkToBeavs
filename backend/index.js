@@ -6,6 +6,7 @@ import dotenv from 'dotenv'
 // Auth
 import register from './routes/auth/register.js'
 import login from './routes/auth/login.js'
+import logout from './routes/auth/logout.js'
 import load_user from './routes/auth/load_user.js'
 
 // Social
@@ -35,6 +36,7 @@ app.use(tracker)
 // Routes
 app.use('/api/auth/register', register)
 app.use('/api/auth/login', login)
+app.use('/api/auth/logout', logout)
 app.use('/api/auth/load_user', load_user)
 
 app.use('/api/social/follow_user', follow_user)
