@@ -39,7 +39,7 @@ import { CgProfile } from 'react-icons/cg'
 import { SlLogout } from 'react-icons/sl'
 import { NavLink, useLocation, useNavigate } from 'react-router-dom'
 import OnlineUser from '../OnlineUser'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 
 import TalkToBeavs from '../text/TalkToBeavs'
 import { loadUserData } from '../../redux/slices/UserSlice'
@@ -58,6 +58,7 @@ function SidebarWithHeader({ children }) {
     const dispatch = useDispatch()
     const location = useLocation()
     const navigate = useNavigate()
+    const user = useSelector((state) => state.user.data)
 
     useEffect(() => {
         if (localStorage.getItem('token')?.includes('@oregonstate.edu')) {
@@ -119,10 +120,12 @@ function SidebarWithHeader({ children }) {
 const SidebarContent = ({ onClose, ...rest }) => {
     return (
         <Box
-            transition="3s ease"
             bg={useColorModeValue('white', 'gray.900')}
             borderRight="1px"
-            borderRightColor={useColorModeValue('gray.200', 'gray.700')}
+            borderEndRadius="xl"
+            px="4"
+            py="4"
+            borderColor={useColorModeValue('gray.200', 'gray.700')}
             w={{ base: 'full', md: 60 }}
             pos="fixed"
             h="full"
@@ -175,7 +178,6 @@ const NavItem = ({ icon, children, ...rest }) => {
                 borderRadius="lg"
                 role="group"
                 cursor="pointer"
-                transition={'all 0.3s ease-in-out'}
                 _hover={{
                     boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
                     transform: 'scale(1.05)',
@@ -246,7 +248,7 @@ const MobileNav = ({ onOpen, ...rest }) => {
                     <Menu>
                         <MenuButton
                             py={2}
-                            transition="all 0.3s"
+
                             _focus={{ boxShadow: 'none' }}
                         >
                             <HStack>

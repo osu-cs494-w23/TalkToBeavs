@@ -14,13 +14,18 @@ import OnlineUser from '../../components/OnlineUser'
 import { useParams } from 'react-router-dom'
 import Posts from '../../components/Posts'
 import FollowButton from '../../components/FollowButton'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import useProfile from '../../hooks/useProfile'
 
 export default function Profile() {
     const { onid } = useParams()
     const dispatch = useDispatch()
-    const profile = useProfile({ onid })
+    const user = useSelector((state) => state.user.data)
+    const profile = useProfile({ onid, user })
+
+    useEffect(() => {
+        document.querySelector('title').innerHTML = `${onid}'s Profile`
+    }, [onid])
 
     return (
         profile && (
@@ -58,7 +63,6 @@ export default function Profile() {
                             <Box
                                 w={'8.5rem'}
                                 textAlign={'center'}
-                                transition={'all 0.3s ease-in-out'}
                                 _hover={{
                                     boxShadow: {
                                         base: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',

@@ -26,6 +26,8 @@ const OnlineUser = () => {
                 top={'0'}
                 pos={'fixed'}
                 right={'0'}
+                borderLeft={'1px'}
+                borderColor={useColorModeValue('gray.200', 'gray.700')}
                 display={{
                     base: 'none',
                     md: 'block',

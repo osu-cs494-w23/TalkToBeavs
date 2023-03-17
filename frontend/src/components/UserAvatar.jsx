@@ -41,7 +41,6 @@ export default function UserAvatar({ user }) {
                 padding={2}
 
                 textAlign={'left'}
-                transition={'all 0.3s ease-in-out'}
                 _hover={{
                     boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
                     transform: 'scale(1.05)',

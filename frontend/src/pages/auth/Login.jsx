@@ -8,6 +8,9 @@ import {
     Input,
     keyframes,
     Text,
+    useColorModeValue,
+    useToast,
+    useColorMode
 } from '@chakra-ui/react'
 import axios from 'axios'
 import ttb from '../../assets/logo.png'
@@ -27,6 +30,7 @@ function Login() {
     const [response, setResponse] = useState('')
     const dispatch = useDispatch()
     const [loading, setLoading] = useState(false)
+    const { colorMode } = useColorMode()
 
     const handleSubmit = async (e) => {
         e.preventDefault()
@@ -94,16 +98,16 @@ function Login() {
             align="center"
             justify="center"
             minH="100vh"
-            bg="gray.100"
-            as={motion.div}
-            animation={slideAnimation}
+            bg={useColorModeValue('gray.50', 'inherit')}
         >
             <Box
+                as={motion.div}
+                animation={slideAnimation}
                 p={8}
                 maxWidth="500px"
                 borderWidth={1}
                 borderRadius={8}
-                boxShadow="lg"
+                boxShadow="xl"
             >
                 <Box textAlign="center">
                     <Heading>Login</Heading>
@@ -155,7 +159,9 @@ function Login() {
                 </Box>
                 <Text mt={4} textAlign="center">
                     Don't have an account?{' '}
-                    <Link style={{ color: '#DE6A1F' }} to="/signup">
+                    <Link style={{
+                        color: colorMode === 'light' ? '#DE6A1F' : '#DE6A1F'
+                    }} to="/signup">
                         Sign Up
                     </Link>
                 </Text>

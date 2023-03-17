@@ -6,6 +6,7 @@ import {
     Box,
     useMediaQuery,
     useDisclosure,
+    useColorModeValue,
     Divider,
     IconButton,
 } from '@chakra-ui/react'
@@ -46,9 +47,12 @@ function Feed() {
                     <IconButton
                         aria-label="Create Post"
                         icon={<EditIcon />}
-                        colorScheme="orange"
+                        color={'orange.500'}
+                        bg={useColorModeValue('gray.300', 'gray.800')}
                         onClick={onOpen}
                         size="lg"
+                        w={{ base: '100%', md: 'auto' }}
+                        h={{ base: '100%', md: 'auto' }}
                         my={6}
                         px={12}
                     />

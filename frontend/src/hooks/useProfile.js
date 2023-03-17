@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 
-function useProfile({ onid }) {
+function useProfile({ onid, user }) {
     const [profile, setProfile] = useState(null)
-
     const fetchProfile = async () => {
         try {
             const response = await axios.get(
@@ -12,7 +11,7 @@ function useProfile({ onid }) {
             setProfile(response.data.user)
         } catch (err) {
             setProfile(null)
-            console.log(err)
+            console.error(err.response.data.message)
         }
     }
 
@@ -22,7 +21,7 @@ function useProfile({ onid }) {
         return () => {
             setProfile(null)
         }
-    }, [onid])
+    }, [onid, user?.following])
 
     return profile
 }

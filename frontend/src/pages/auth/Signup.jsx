@@ -1,11 +1,23 @@
-import { useState, useEffect } from 'react';
-import { Box, Button, Flex, Heading, Image, Input, keyframes, Text } from '@chakra-ui/react';
-import axios from 'axios';
-import ttb from '../../assets/logo.png';
-import io from 'socket.io-client';
-import { Link, useNavigate } from 'react-router-dom';
-import { motion } from 'framer-motion';
-import { slideAnimation } from '../../lib/animations';
+import { useState, useEffect } from 'react'
+import {
+    Box,
+    Button,
+    Flex,
+    Heading,
+    Image,
+    Input,
+    keyframes,
+    Text,
+    useColorModeValue,
+    useToast,
+    useColorMode
+} from '@chakra-ui/react'
+import axios from 'axios'
+import ttb from '../../assets/logo.png'
+import io from 'socket.io-client'
+import { Link, useNavigate } from 'react-router-dom'
+import { motion } from 'framer-motion'
+import { slideAnimation } from '../../lib/animations'
 
 function Signup() {
   const [isLoading, setIsLoading] = useState(false);
@@ -79,11 +91,11 @@ function Signup() {
             align="center"
             justify="center"
             minH="100vh"
-            bg="gray.100"
-            as={motion.div}
-            animation={slideAnimation}
+            bg={useColorModeValue('gray.50', 'inherit')}
         >
             <Box
+                as={motion.div}
+                animation={slideAnimation}
                 p={8}
                 maxWidth="500px"
                 borderWidth={1}

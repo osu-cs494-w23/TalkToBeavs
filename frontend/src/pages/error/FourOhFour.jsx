@@ -10,7 +10,6 @@ const FourOhFour = () => {
             justify="center"
             h="100vh"
             w="100vw"
-            bg="gray.100"
         >
             <Heading as="h1" size="2xl" mb={4}>
                 404

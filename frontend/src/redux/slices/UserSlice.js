@@ -41,7 +41,7 @@ export const followUser = createAsyncThunk(
     'user/follow',
     async (values, { rejectWithValue }) => {
         try {
-            const response = await axios.post('/api/social/follow_user', values)
+            const response = await axios.post('http://localhost:8080/api/social/follow_user', values)
             return response.data
         } catch (err) {
             return rejectWithValue(err.response.data)
@@ -108,25 +108,26 @@ const userSlice = createSlice({
             state.error = null
             state.message = null
         })
+        builder.addCase(followUser.fulfilled, (state, action) => {
+            state.data = action.payload.user
+        })  
     },
 })
 
 export const { setUser, loadUser, loginUser, logoutUser } = userSlice.actions
 export default userSlice.reducer
 
-export const selectUser = (state) => state.data
-export const selectUserProfile = (state) => state.data
+export const selectUser = (state) => state.user.data
 
 export const selectIsFollowing = (action) => (state) => {
     let isFollowing = false
 
     if (state.user.data) {
         isFollowing = state.user.data.following.find(
-            (user) => user.email === action
+            (user) => user.toString() === action.toString()
         )
-        console.log("isFollowing: ", isFollowing)
     }
 
+    return isFollowing?.length > 0
 
-    return isFollowing ? true : false
 }
