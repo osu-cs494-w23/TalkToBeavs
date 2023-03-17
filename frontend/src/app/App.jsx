@@ -10,6 +10,7 @@ import {
 import io from 'socket.io-client'
 import { Provider } from 'react-redux'
 
+import { TransitionGroup, CSSTransition } from "react-transition-group";
 import ThemeToggle from '../components/layout/ThemeToggle'
 
 import SidebarWithHeader from '../components/layout/Skeleton'
@@ -25,6 +26,7 @@ import TextLobby from '../pages/navigation/TextLobby'
 import Lobby from '../pages/navigation/Lobby'
 import Landing from '../pages/navigation/Landing'
 import Logout from '../pages/navigation/Logout'
+import Home from '../pages/navigation/Home'
 
 import Feed from '../pages/feed/Feed'
 
@@ -34,18 +36,22 @@ import Login from '../pages/auth/Login'
 import VideoChat from '../pages/chat/VideoChat'
 import TextChat from '../pages/chat/TextChat'
 import Profile from '../pages/profile/Profile'
+import { AnimatePresence } from 'framer-motion';
 
 const App = () => {
+    const location = useLocation()
     return (
         <Provider store={store}>
-            <BrowserRouter>
+            <AnimatePresence mode='wait'>
                 <SidebarWithHeader>
                     <ThemeToggle />
-                    <Routes>
+                    <Routes location={location} key={location.pathname}>
                         <Route path="/" element={<Landing />} />
                         <Route path="/signup" element={<Signup />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/logout" element={<Logout />} />
+
+                        <Route path="/home" element={<Home />} />
 
                         <Route path="/profile/:onid" element={<Profile />} />
 
@@ -61,7 +67,8 @@ const App = () => {
                         <Route path="*" element={<FourOhFour />} />
                     </Routes>
                 </SidebarWithHeader>
-            </BrowserRouter>
+            </AnimatePresence>
+
         </Provider>
     )
 }

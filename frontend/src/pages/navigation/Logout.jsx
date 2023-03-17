@@ -21,7 +21,7 @@ export default function Logout() {
     const toast = useToast()
 
     const { colorMode, toggleColorMode } = useColorMode()
-    const seconds = 7
+    const seconds = 2
     const navigate = useNavigate()
     const dispatch = useDispatch()
     const [timeLeft, setTimeLeft] = useState(seconds)

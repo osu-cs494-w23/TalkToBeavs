@@ -6,6 +6,7 @@ import {
     Heading,
     Image,
     Input,
+    keyframes,
     Text,
 } from '@chakra-ui/react'
 import axios from 'axios'
@@ -13,6 +14,9 @@ import ttb from '../../assets/logo.png'
 import { Link, useNavigate } from 'react-router-dom'
 import { loginUser, selectUser } from '../../redux/slices/UserSlice'
 import { useDispatch, useSelector } from 'react-redux'
+import { motion } from 'framer-motion'
+import { slideAnimation } from '../../lib/animations'
+
 
 function Login() {
     const navigate = useNavigate()
@@ -66,7 +70,7 @@ function Login() {
                 }, 1000)
             }
         } catch (err) {
-            console.log(err)
+            console.error(err.response.data.message)
             setLoading(false)
             setError('Login failed')
         }
@@ -79,6 +83,8 @@ function Login() {
             justify="center"
             minH="100vh"
             bg="gray.100"
+            as={motion.div}
+            animation={slideAnimation}
         >
             <Box
                 p={8}

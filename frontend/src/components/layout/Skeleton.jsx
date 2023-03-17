@@ -44,6 +44,7 @@ import { useDispatch } from 'react-redux'
 import TalkToBeavs from '../text/TalkToBeavs'
 import { loadUserData } from '../../redux/slices/UserSlice'
 
+
 const LinkItems = [
     { name: 'Home', icon: FiHome, link: '/home' },
     { name: 'Profile', icon: CgProfile, link: '/profile' },
@@ -71,7 +72,9 @@ function SidebarWithHeader({ children }) {
             <>
                 {location.pathname !== '/logout' &&
                     location.pathname !== '/login' &&
-                    location.pathname !== 'register' &&
+                    location.pathname !== '/signup' &&
+                    location.pathname !== '/text' &&
+                    location.pathname !== '/video' &&
                     location.pathname !== '/' && (
                         <>
                             <OnlineUser />
@@ -81,7 +84,9 @@ function SidebarWithHeader({ children }) {
             <>
                 {location.pathname !== '/logout' &&
                     location.pathname !== '/login' &&
-                    location.pathname !== 'register' &&
+                    location.pathname !== '/signup' &&
+                    location.pathname !== '/text' &&
+                    location.pathname !== '/video' &&
                     location.pathname !== '/' && (
                         <SidebarContent
                             onClose={() => onClose}
@@ -145,7 +150,7 @@ const SidebarContent = ({ onClose, ...rest }) => {
 
 const NavItem = ({ icon, children, ...rest }) => {
     const token = localStorage.getItem('token')
-    const onid = token.split('@')[0]
+    const onid = token?.split('@')[0]
     return (
         <Link
             style={{ textDecoration: 'none' }}

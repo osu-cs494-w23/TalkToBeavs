@@ -6,12 +6,12 @@ import { AuthContext } from '../../components/AuthProvider'
 
 const VideoLobby = () => {
     const socket = io('http://localhost:8080')
-    const { user } = React.useContext(AuthContext)
-    const navigate = useNavigate()
 
     React.useEffect(() => {
-        let email = localStorage.getItem('email')
-        console.log('email: ' + email)
+        let email = localStorage.getItem('token')
+        const user = {
+            email: email,
+        }
 
         socket.on('connect', () => {
             console.log('Connected to the server')

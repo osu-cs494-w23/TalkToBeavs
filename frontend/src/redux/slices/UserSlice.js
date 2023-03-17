@@ -116,3 +116,17 @@ export default userSlice.reducer
 
 export const selectUser = (state) => state.data
 export const selectUserProfile = (state) => state.data
+
+export const selectIsFollowing = (action) => (state) => {
+    let isFollowing = false
+
+    if (state.user.data) {
+        isFollowing = state.user.data.following.find(
+            (user) => user.email === action
+        )
+        console.log("isFollowing: ", isFollowing)
+    }
+
+
+    return isFollowing ? true : false
+}

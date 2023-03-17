@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import {
     Avatar,
     Stack,
@@ -8,46 +8,54 @@ import {
     AvatarGroup,
     Flex,
 } from '@chakra-ui/react'
-import { useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 
 export default function UserAvatar({ user }) {
     const { name, avatarImg, online, email } = user
+    const [active, setActive] = useState(false)
 
     const onid = email.replace(/@.*/, '')
+    const token = localStorage.getItem('token')
+
     const navigate = useNavigate()
 
     return (
         <Stack
             direction="column"
             ml={2}
-            my={6}
-            onClick={() =>
-                navigate(`/profile/${onid}`, { state: { user: user } })
-            }
+            as={NavLink}
+            to={`/profile/${onid}`}
+            my={2}
+            _activeLink={{
+                color: 'white',
+                textDecoration: 'none',
+                boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
+                cursor: 'pointer',
+                borderRadius: '0.5rem',
+                bg: 'orange.500',
+            }}
         >
             <Flex
                 direction="row"
                 gap={12}
+                padding={2}
+
                 textAlign={'left'}
                 transition={'all 0.3s ease-in-out'}
                 _hover={{
                     boxShadow: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
                     transform: 'scale(1.05)',
-                    padding: '0.5rem',
                     cursor: 'pointer',
                     borderRadius: '0.5rem',
                     bg: 'orange.500',
                 }}
             >
                 <Avatar
-                    border={online ? '2px solid white' : '2px solid white'}
+                    border={online ? '2px solid orange' : '2px solid white'}
                     size="sm"
                     name={name}
-                    sx={{
-                        border: '2px solid white',
-                        boxShadow: '0 0 0 2px #fff',
-                    }}
                     src={avatarImg}
+                    opacity={online ? '1' : '0.5'}
                 >
                     <AvatarBadge
                         boxSize="3"
