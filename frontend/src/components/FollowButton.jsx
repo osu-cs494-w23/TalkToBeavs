@@ -3,8 +3,7 @@ import { IconButton, Flex, Box, Text, Button } from '@chakra-ui/react'
 import { CheckIcon, AddIcon } from '@chakra-ui/icons'
 import { useSelector, useDispatch } from 'react-redux'
 import useOnlineUsers from '../hooks/useOnlineUsers'
-import axios from 'axios'
-import { selectIsFollowing, selectUser } from '../redux/slices/UserSlice'
+import { followUser, selectIsFollowing, selectUser } from '../redux/slices/UserSlice'
 import { useNavigate } from 'react-router-dom'
 import useProfile from '../hooks/useProfile'
 
@@ -23,12 +22,7 @@ export default function FollowButton({ user }) {
             currentUserEmail: loggedInUser.email,
             email: user.email,
         }
-        try {
-            const response = await axios.post("http://localhost:8080/api/social/follow_user", req)
-            console.log(response.data)
-        } catch (err) {
-            console.error(err.response.data.message)
-        }
+        dispatch(followUser(req))
     }
 
     if (loggedInUser?.email === user?.email) return (

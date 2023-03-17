@@ -12,17 +12,21 @@ import {
 } from '@chakra-ui/react'
 import OnlineUser from '../../components/OnlineUser'
 import { useParams } from 'react-router-dom'
-import Posts from '../../components/Posts'
+import Post from '../../components/Post'
 import FollowButton from '../../components/FollowButton'
 import { useDispatch, useSelector } from 'react-redux'
 import useProfile from '../../hooks/useProfile'
+import { useAutoAnimate } from '@formkit/auto-animate/react'
+import FollowStats from '../../components/text/FollowStats'
+import usePosts from '../../hooks/usePosts'
+import ProfilePostList from '../../components/card/ProfilePostList'
 
 export default function Profile() {
     const { onid } = useParams()
     const dispatch = useDispatch()
     const user = useSelector((state) => state.user.data)
     const profile = useProfile({ onid, user })
-
+    const posts = usePosts({ onid })
     useEffect(() => {
         document.querySelector('title').innerHTML = `${onid}'s Profile`
     }, [onid])
@@ -59,58 +63,8 @@ export default function Profile() {
                             mb={4}
                         />
 
-                        <HStack spacing={{ base: 36, sm: 12, md: 24, lg: 28 }}>
-                            <Box
-                                w={'8.5rem'}
-                                textAlign={'center'}
-                                _hover={{
-                                    boxShadow: {
-                                        base: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
-                                    },
-                                    transform: 'scale(1.05)',
-                                    padding: '0.5rem',
-                                    cursor: 'pointer',
-                                    borderRadius: '0.5rem',
-                                    bg: {
-                                        base: 'orange.500',
-                                    },
-                                }}
-                            >
-                                <Text fontSize="xl" fontWeight="bold">
-                                    Followers
-                                </Text>
-                                <Text fontSize="xl" fontWeight="bold">
-                                    {profile.followers.length}
-                                </Text>
-                            </Box>
+                        <FollowStats onid={onid} user={user} />
 
-                            <Divider orientation="vertical" h="100px" />
-
-                            <Box
-                                w={'8.5rem'}
-                                textAlign={'center'}
-                                transition={'all 0.3s ease-in-out'}
-                                _hover={{
-                                    boxShadow: {
-                                        base: 'rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px',
-                                    },
-                                    transform: 'scale(1.05)',
-                                    padding: '0.5rem',
-                                    cursor: 'pointer',
-                                    borderRadius: '0.5rem',
-                                    bg: {
-                                        base: 'orange.500',
-                                    },
-                                }}
-                            >
-                                <Text fontSize="xl" fontWeight="bold">
-                                    Following
-                                </Text>
-                                <Text fontSize="xl" fontWeight="bold">
-                                    {profile.following.length}
-                                </Text>
-                            </Box>
-                        </HStack>
                         <Divider
                             w={{
                                 base: '50%',
@@ -125,20 +79,7 @@ export default function Profile() {
                             <Divider mt={2} />
                         </Heading>
 
-                        <Box
-                            w={{
-                                base: '100%',
-                                sm: '100%',
-                                md: '80%',
-                                lg: '100%',
-                            }}
-                            // h="100%"
-                            my={8}
-                        >
-                            {profile.posts.map((post, i) => (
-                                <Posts key={i} post={post} />
-                            ))}
-                        </Box>
+                        <ProfilePostList posts={posts} />
                     </Flex>
                 </Box>
             </>

@@ -5,7 +5,7 @@ import { ArrowDownIcon, ArrowUpIcon } from '@chakra-ui/icons'
 import { upvotePost, downvotePost } from '../redux/slices/FeedSlice'
 import moment from 'moment'
 
-const Posts = ({ post }) => {
+const Post = ({ post }) => {
     const [isUpvoted, setIsUpvoted] = useState(false)
     const [isDownvoted, setIsDownvoted] = useState(false)
 
@@ -93,4 +93,4 @@ const Posts = ({ post }) => {
     )
 }
 
-export default Posts
+export default Post

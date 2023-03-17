@@ -23,7 +23,7 @@ export default function ThemeToggle() {
                     top="2"
                     left="0"
                     m={2}
-                    zIndex="100"
+                    zIndex="1"
                 />
             </Box>
         </>

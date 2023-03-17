@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import Post from '../../components/Posts'
+import Post from '../../components/Post'
 import {
     Text,
     Flex,
