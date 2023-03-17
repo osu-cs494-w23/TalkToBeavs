@@ -57,14 +57,21 @@ const OnlineUser = () => {
                 </Text>
 
                 <Box>
-                    {users.map((user, i) => (
-                        <Box key={i - 1}>
-                            <UserAvatar key={i + 1} user={user} />
-                            <Divider key={i / 2} />
+                    {users.sort((a, b) => {
+                        // Sort by online status first
+                        if (b.online !== a.online) {
+                            return b.online - a.online;
+                        }
+                        // If both users are online or offline, sort alphabetically
+                            return a.name.localeCompare(b.name);
+                        }).map((user, i) => (
+                        <Box key={i}>
+                            <UserAvatar user={user} />
+                            <Divider />
                         </Box>
-
                     ))}
                 </Box>
+
             </Box>
         )
     )
