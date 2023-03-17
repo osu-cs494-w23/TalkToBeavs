@@ -1,32 +1,72 @@
-import { useState, useEffect } from 'react'
-import {
-    Box,
-    Button,
-    Flex,
-    Heading,
-    Image,
-    Input,
-    keyframes,
-    Text,
-} from '@chakra-ui/react'
-import axios from 'axios'
-import ttb from '../../assets/logo.png'
-import io from 'socket.io-client'
-import { Link, useNavigate } from 'react-router-dom'
-import { motion } from 'framer-motion'
-import { slideAnimation } from '../../lib/animations'
+import { useState, useEffect } from 'react';
+import { Box, Button, Flex, Heading, Image, Input, keyframes, Text } from '@chakra-ui/react';
+import axios from 'axios';
+import ttb from '../../assets/logo.png';
+import io from 'socket.io-client';
+import { Link, useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { slideAnimation } from '../../lib/animations';
 
 function Signup() {
-    const [isLoading, setIsLoading] = useState(false)
-    const [name, setName] = useState('')
-    const [password, setPassword] = useState('')
-    const [error, setError] = useState('')
-    const [email, setEmail] = useState('')
-    const [response, setResponse] = useState('')
+  const [isLoading, setIsLoading] = useState(false);
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [email, setEmail] = useState('');
+  const [response, setResponse] = useState('');
+  const navigate = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault()
+  const handleSubmit = async (e) => {
+    console.log(email);
+    console.log(name);
+    console.log(password);
+    const data = {
+      email,
+      name,
+      password,
+    };
+    e.preventDefault();
+    setIsLoading(true)
+
+    if (name === '' || email === '' || password === '') {
+        setTimeout(() => {
+            setIsLoading(false)
+            setError('Please fill in all fields')
+            return
+        }, 1000)
     }
+
+    try {
+      const res = await axios.post('http://localhost:8080/api/auth/register', data);
+
+      console.log(res.status);
+
+      if (res.status === 201) {
+        setTimeout(() => {
+        setIsLoading(false)
+        console.log('success');
+        setResponse('Signup successful!')
+    }, 1000)
+    setTimeout(() => {
+        navigate('/login');
+        setIsLoading(false)
+    }, 2000)
+      } else {
+        setError('Signup failed')
+        setTimeout(() => {
+            setIsLoading(false)
+        }, 1000)
+    }
+    } catch (err) {
+        setIsLoading(false)
+        if (err.response.data.message === 'User already exists') {
+            setError('User already exists')
+        } else {
+            setError('Signup failed')
+        }
+        console.error(err.response.data.message)
+    }
+  };
 
     return (
         <Flex

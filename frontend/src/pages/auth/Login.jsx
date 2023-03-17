@@ -72,7 +72,12 @@ function Login() {
         } catch (err) {
             console.error(err.response.data.message)
             setLoading(false)
-            setError('Login failed')
+            if (err.response.data.message === 'Incorrect password') {
+                setError('Incorrect password')
+            } else {
+                setError('Login failed')
+            }
+            console.error(err.response.data.message)
         }
     }
 

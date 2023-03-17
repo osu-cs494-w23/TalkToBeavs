@@ -21,12 +21,15 @@ router.post('/', async (req, res) => {
 
         const user = await User.findOne({ email: req.body.email })
 
-        if (user) {
+        if (user && user.password === req.body.password) {
             user.online = true
             await user.save()
             return res
                 .status(200)
                 .json({ message: 'Welcome Back!', user: user })
+        }
+        else if (user.password !== req.body.password) {
+            return res.status(401).json({ message: 'Incorrect password' })
         }
 
         if (!user) {
