@@ -39,7 +39,6 @@ const feedSlice = createSlice({
     },
 })
 
-
 export const { addPost, setAllPosts, upvotePost, downvotePost } =
     feedSlice.actions
 
