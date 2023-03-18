@@ -247,4 +247,4 @@ function VideoChat() {
     )
 }
 
-export default VideoChat
+export default VideoChat;

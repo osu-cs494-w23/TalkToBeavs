@@ -12,4 +12,4 @@ export const videoSlice = createSlice({
     reducers: {},
 })
 
-export default videoSlice.reducer
+export default videoSlice.reducer;

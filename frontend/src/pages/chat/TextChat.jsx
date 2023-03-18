@@ -47,4 +47,4 @@ const TextChat = (props) => {
     )
 }
 
-export default TextChat
+export default TextChat;

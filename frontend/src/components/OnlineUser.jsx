@@ -79,4 +79,4 @@ const OnlineUser = () => {
     )
 }
 
-export default OnlineUser
+export default OnlineUser;
