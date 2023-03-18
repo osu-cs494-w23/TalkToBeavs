@@ -39,6 +39,8 @@ const feedSlice = createSlice({
     },
 })
 
+export const { addPost, setAllPosts, upvotePost, downvotePost } =
+    feedSlice.actions
 
 export const selectAllPosts = (state) => state.feed.posts
 
