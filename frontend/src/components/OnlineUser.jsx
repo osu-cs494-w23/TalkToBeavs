@@ -65,7 +65,7 @@ const OnlineUser = () => {
                             return b.online - a.online;
                         }
                         // If both users are online or offline, sort alphabetically
-                            return a.name.localeCompare(b.name);
+                            return a.email.localeCompare(b.email);
                         }).map((user, i) => (
                         <Box key={i}>
                             <UserAvatar user={user} />
