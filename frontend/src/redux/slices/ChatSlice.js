@@ -9,11 +9,27 @@ export const socketMiddleware = (socket) => (params) => (next) => (action) => {
     case 'chat/connect':
       console.log('connecting to socket');
       console.log(payload);
-      console.log(type);
       socket.connect(payload.url);
 
-      socket.on('connect', () => {
+      socket.on('connect', (data) => {
         console.log('connected to socket');
+        console.log(payload)
+        socket.emit('joinQueue', {
+          name: payload.who
+        })
+      });
+
+      socket.on('joinQueue', (data) => {
+        console.log('joined queue');
+        console.log(data);
+        socket.emit('getQueueStatus', {
+          name: payload.who
+        })
+      });
+
+      socket.on('getQueueStatus', (data) => {
+        console.log('queue status');
+        console.log(data);
       });
 
       socket.on('join', (data) => {
@@ -23,7 +39,6 @@ export const socketMiddleware = (socket) => (params) => (next) => (action) => {
           message: 'joined the room',
         };
         dispatch(addMessage(init));
-        di;
       });
 
       break;
@@ -52,6 +67,7 @@ const initialState = {
   messages: [],
   status: 'idle',
   error: null,
+  users: [],
 };
 
 const chatSlice = createSlice({
@@ -61,6 +77,7 @@ const chatSlice = createSlice({
     addMessage: (state, action) => {
       state.messages.push(action.payload);
     },
+
   },
 });
 

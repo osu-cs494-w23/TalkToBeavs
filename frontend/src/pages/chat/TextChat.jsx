@@ -40,7 +40,9 @@ export default function TextChat() {
             navigate('/home');
         }
 
-        dispatch({ type: 'chat/join', payload: { username: user?.email || 'Anonymous' } });
+        if (user) {
+            dispatch({ type: 'chat/join', payload: { username: user?.email || 'Anonymous' } });
+        }
 
         return () => {
             navigate('/home');

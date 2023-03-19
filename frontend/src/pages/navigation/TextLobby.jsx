@@ -1,14 +1,20 @@
 import React from 'react';
 import { Text, Heading, Flex, Box, Button, useColorModeValue } from '@chakra-ui/react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+
 
 const TextLobby = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const user = useSelector((state) => state.user.data);
 
   React.useEffect(() => {
-    dispatch({ type: 'chat/connect', payload: { url: 'ws://localhost:8080' } });
+    dispatch({ type: 'chat/connect', payload: { url: 'ws://talk-to-beavs.herokuapp.com', who: user?.email || 'Anonymous' } });
+
+    return () => {
+      navigate('/home');
+    }
   }, []);
 
   return (
